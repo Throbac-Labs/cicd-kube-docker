@@ -32,13 +32,13 @@ pipeline {
             }
         }
 
-        stage('INTEGRATION TEST'){
+        stage('INTEGRATION TEST') {
             steps {
                 sh 'mvn verify -DskipUnitTests'
             }
         }
 
-        stage ('CODE ANALYSIS WITH CHECKSTYLE'){
+        stage ('CODE ANALYSIS WITH CHECKSTYLE') {
             steps {
                 sh 'mvn checkstyle:checkstyle'
             }
@@ -73,7 +73,7 @@ pipeline {
             }
         }
 
-        stage{'Build Docker App Image'} {
+        stage('Build Docker App Image') {
             steps {
                 script {
                     dockerImage = docker.build registry + ":V$BUILD_NUMBER"
@@ -81,7 +81,7 @@ pipeline {
             }
         }
         
-        stage{'Upload Image'} {
+        stage('Upload Image') {
             steps{
                 script {
                     docker.withRegistry('', registryCredential) {
@@ -93,7 +93,7 @@ pipeline {
         }
         
         stage('Remove Unused docker image') {
-            step{
+            steps{
                 sh "docker rmi $registry:V$BUILD_NUMBER"
             }
         }
